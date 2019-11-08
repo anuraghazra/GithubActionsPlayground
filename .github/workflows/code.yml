@@ -1,0 +1,34 @@
+name: ExecuteCodeBlock
+
+on:
+  issues:
+    types: [edited, deleted, closed, reopened, labeled, unlabeled]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "10.x"
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Run Code
+        run: |
+          npm i
+          node index.js
+        env:
+          CI: true
+          OCTOCAT_KEY: ${{ secrets.OCTOCAT_KEY }}
+          MY_TOKEN: ${{ secrets.MY_TOKEN }}

@@ -1,0 +1,18 @@
+{
+  "name": "actions-playground",
+  "version": "1.0.0",
+  "description": "github action playground",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index"
+  },
+  "author": "anuraghazra",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/rest": "^16.34.1",
+    "dotenv": "^8.2.0",
+    "markdown-parser": "0.0.8",
+    "nodemailer": "^6.3.1",
+    "octocat": "^1.2.1"
+  }
+}
