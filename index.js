@@ -30,23 +30,23 @@ const octokit = new Octokit({
 
   let issueNumber = issuesRes[0].number
   let issueBody = issuesRes[0].body
-  // console.log(issueBody)
 
   async function createComment(msg) {
     await octokit.issues.createComment({
       owner,
       repo,
       issue_number: issueNumber,
-      body: `**Code executed:**\n\n\`\`\`bash\n${JSON.stringify(msg)}\n\`\`\``
+      body: `**Code executed [bot]:**\n\n\`\`\`bash\n${JSON.stringify(msg)}\n\`\`\``
     })
   }
 
   // parse markdown
   parser.parse(issueBody, function (err, result) {
     if (err) throw new Error(err);
-    if (result.codes[0].code.includes('process.env.')) { 
-      throw new Error('Violation')
-    };
+    // checking
+    // if (result.codes[0].code.includes('process.env.')) { 
+    //   throw new Error('Violation')
+    // };
 
     let executedCode = eval(result.codes[0].code.replace(/\n,/igm))
     createComment(executedCode)

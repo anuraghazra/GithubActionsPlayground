@@ -2,7 +2,7 @@ name: ExecuteCodeBlock
 
 on:
   issues:
-    types: [edited, deleted, closed, reopened, labeled, unlabeled]
+    types: [opened, edited, deleted, closed, reopened, labeled, unlabeled]
 
 jobs:
   build:
