@@ -43,9 +43,10 @@ const octokit = new Octokit({
   // parse markdown
   parser.parse(issueBody, function (err, result) {
     if (err) throw new Error(err);
-    if (result.codes[0].code.includes('process.env.')) { 
-      throw new Error('Violation')
-    };
+    process.env = {};
+    // if (result.codes[0].code.includes('process.env.')) { 
+    //   throw new Error('Violation')
+    // };
 
     let executedCode = eval(result.codes[0].code.replace(/\n,/igm))
     createComment(executedCode)
