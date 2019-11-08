@@ -56,7 +56,7 @@ async function createComment(msg, issueNumber) {
       if (err) throw new Error(err);
       // vm is acting weirdly when setting console log twice
       if (index > 0) consoleOverwriteScript = '';
-      
+
       let code = result.codes[0].code.replace(/\n,/igm, '');
       let res = vm.run(`${consoleOverwriteScript}\n${code}`)
 
