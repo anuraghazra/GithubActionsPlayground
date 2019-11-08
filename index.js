@@ -12,14 +12,13 @@ const vm = new VM({
 });
 
 // DONT DO THIS
-const consoleOverwriteScript = `
+let consoleOverwriteScript = `
 console.oldLog = console.log;
 console.log = function (value) {
   console.oldLog(value);
   return value;
 };
 `
-
 // default configs
 let owner = 'anuraghazra';
 let repo = 'GithubActionsPlayground';
@@ -30,6 +29,14 @@ const octokit = new Octokit({
   auth: process.env.OCTOCAT_KEY
 });
 
+async function createComment(msg, issueNumber) {
+  await octokit.issues.createComment({
+    owner,
+    repo,
+    issue_number: issueNumber,
+    body: `**Code executed [bot]:**\n\n\`\`\`bash\n${JSON.stringify(msg)}\n\`\`\``
+  })
+}
 
 // get data
 (async () => {
@@ -38,25 +45,23 @@ const octokit = new Octokit({
     repo
   })
 
-  let issueNumber = issuesRes[0].number
-  let issueBody = issuesRes[0].body
+  // loop thought all the issues NOTE: PR are also considered as issues
+  issuesRes.forEach((issue, index) => {
+    let issueNumber = issue.number
+    let issueBody = issue.body
 
-  async function createComment(msg) {
-    await octokit.issues.createComment({
-      owner,
-      repo,
-      issue_number: issueNumber,
-      body: `**Code executed [bot]:**\n\n\`\`\`bash\n${JSON.stringify(msg)}\n\`\`\``
+
+    // parse markdown
+    parser.parse(issueBody, function (err, result) {
+      if (err) throw new Error(err);
+      // vm is acting weirdly when setting console log twice
+      if (index > 0) consoleOverwriteScript = '';
+      
+      let code = result.codes[0].code.replace(/\n,/igm, '');
+      let res = vm.run(`${consoleOverwriteScript}\n${code}`)
+
+      createComment(res, issueNumber);
     })
-  }
 
-  // parse markdown
-  parser.parse(issueBody, function (err, result) {
-    if (err) throw new Error(err);
-
-    let code = result.codes[0].code.replace(/\n,/igm)
-    let res = vm.run(`${consoleOverwriteScript}\n${code}`)
-
-    createComment(res)
   })
 })()
