@@ -30,5 +30,4 @@ jobs:
           node index.js
         env:
           CI: true
-          OCTOCAT_KEY: ${{ secrets.OCTOCAT_KEY }}
-          MY_TOKEN: ${{ secrets.MY_TOKEN }}
+          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}

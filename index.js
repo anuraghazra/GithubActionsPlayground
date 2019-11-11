@@ -26,7 +26,7 @@ let repo = 'GithubActionsPlayground';
 // initialize contructors
 const parser = new Parser();
 const octokit = new Octokit({
-  auth: process.env.OCTOCAT_KEY
+  auth: process.env.PERSONAL_TOKEN
 });
 
 async function createComment(msg, issueNumber) {
