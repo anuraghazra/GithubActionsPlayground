@@ -1,6 +1,6 @@
-# Experiments With Github Actions
+# Executing Markdown Codeblocks With Github Actions
 
-Just trying things out.
+Checkout the [blogpost](https://anuraghazra.github.io/blog/executing-markdown-codeblocks-with-github-actions/)
 
 
-:heart:
+Made with :heart:
